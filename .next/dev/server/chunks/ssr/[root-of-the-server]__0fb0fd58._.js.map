@@ -1,0 +1,9 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 17, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":""}},
+    {"offset": {"line": 20, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":""}},
+    {"offset": {"line": 23, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":""}},
+    {"offset": {"line": 27, "column": 0}, "map": {"version":3,"sources":["file:///home/endeavour/gallery/frontend/app/page.tsx"],"sourcesContent":["import Counter from \"./_components/Counter\";\nimport ResetButton from \"./_components/ResetButton\";\nimport Result from \"./_components/Result\";\n\nexport default function Redux() {\n  return (\n    <div className=\"w-screen flex flex-col gap-10 mt-10 items-center\">\n      <h1 className=\"text-center font-bold text-2xl text-gray-600\">\n        Redux Counter\n      </h1>\n      <div className=\"flex flex-col gap-4 items-center\">\n        <h1>Component 1</h1>\n        <Counter />\n        <Result />\n      </div>\n      <ResetButton />\n    </div>\n  )\n}"],"names":[],"mappings":";;;;;AAAA;AACA;AACA;;;;;AAEe,SAAS;IACtB,qBACE,8OAAC;QAAI,WAAU;;0BACb,8OAAC;gBAAG,WAAU;0BAA+C;;;;;;0BAG7D,8OAAC;gBAAI,WAAU;;kCACb,8OAAC;kCAAG;;;;;;kCACJ,8OAAC,yIAAO;;;;;kCACR,8OAAC,wIAAM;;;;;;;;;;;0BAET,8OAAC,6IAAW;;;;;;;;;;;AAGlB"}}]
+}

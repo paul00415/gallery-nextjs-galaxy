@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import  StoreProvider from "./StoreProvider";
+import './globals.css';
 
 export const metadata: Metadata = {
   title: "Gallery App",

@@ -12,7 +12,9 @@
     "lint-staged": "lint-staged"
   },
   "dependencies": {
+    "@heroui/react": "^2.8.7",
     "@reduxjs/toolkit": "^2.11.2",
+    "framer-motion": "^12.23.26",
     "next": "16.1.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",

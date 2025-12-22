@@ -1,6 +1,6 @@
-import Counter from "./_components/Counter";
-import ResetButton from "./_components/ResetButton";
-import Result from "./_components/Result";
+import Counter from './_components/Counter';
+import ResetButton from './_components/ResetButton';
+import Result from './_components/Result';
 
 export default function Redux() {
   return (
@@ -14,5 +14,5 @@ export default function Redux() {
       </div>
       <ResetButton />
     </div>
-  )
+  );
 }

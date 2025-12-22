@@ -1,10 +1,10 @@
-"use client";
+'use client';
 // Importing the resetState action creator from the CounterSlice.
-import { resetState } from "@/lib/features/CounteState/CounterSlice";
-import { useDispatch } from "react-redux";
+import { resetState } from '@/lib/features/CounteState/CounterSlice';
+import { useDispatch } from 'react-redux';
 
 export default function ResetButton() {
-// Initializing the dispatch function to dispatch actions to the Redux store.
+  // Initializing the dispatch function to dispatch actions to the Redux store.
   const dispatch = useDispatch();
   return (
     <div>

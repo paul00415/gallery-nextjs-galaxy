@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Input, Avatar } from '@heroui/react';
+import { Input, Button } from '@heroui/react';
 import { SearchIcon } from '@heroui/shared-icons';
 import {
   Dropdown,
@@ -50,9 +50,8 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="justify-end">
-        <div>
-          <Dropdown>
+      <div className="justify-end gap-3 flex flex-row items-center">
+        {/* <Dropdown>
             <DropdownTrigger>
               <Avatar name="Guest" src="/images/avatar.png" />
             </DropdownTrigger>
@@ -68,8 +67,20 @@ export default function Header() {
                 Logout
               </DropdownItem>
             </DropdownMenu>
-          </Dropdown>
-        </div>
+          </Dropdown> */}
+        {/* Login Button */}
+        <Link href="/login">
+          <Button variant="bordered" size="sm">
+            Login
+          </Button>
+        </Link>
+
+        {/* Register Button */}
+        <Link href="/register">
+          <Button variant="solid" size="sm">
+            Register
+          </Button>
+        </Link>
       </div>
     </div>
   );

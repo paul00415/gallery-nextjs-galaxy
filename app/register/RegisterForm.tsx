@@ -1,0 +1,112 @@
+'use client';
+
+import { useState } from 'react';
+import { Input, Button } from '@heroui/react';
+import NormalInput from '../../components/InputFields/NormalInput';
+
+export default function RegisterForm() {
+  const [name, setName] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [psd, setPsd] = useState('');
+  const [psdError, setPsdError] = useState('');
+  const [confirmPsd, setConfirmPsd] = useState('');
+  const [confirmPsdError, setConfirmPsdError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = async () => {
+    setNameError('');
+    setEmailError('');
+    setPsdError('');
+    setConfirmPsdError('');
+
+    // Basic validation
+    if (!name) {
+      setNameError('Name is required');
+    }
+    if (!email) {
+      setEmailError('Email is required');
+    }
+    if (!psd) {
+      setPsdError('Password is required');
+    }
+    if (psd !== confirmPsd) {
+      setConfirmPsdError('Passwords do not match');
+    }
+
+    // setLoading(true);
+
+    // try {
+    //     // Simulate API call
+    //     await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    //     console.log('Registered successfully', { name, email, password });
+
+    //     // Reset form or redirect after registration
+    //     setName('');
+    //     setEmail('');
+    //     setPassword('');
+    //     setConfirmPassword('');
+    // } catch (err) {
+    //     setError('Registration failed. Please try again.');
+    // } finally {
+    //     setLoading(false);
+    // }
+  };
+
+  return (
+    <div className="max-w-sm mx-auto p-6 border rounded-lg shadow-sm">
+      <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
+
+      {/* Name */}
+      <NormalInput
+        type="text"
+        label="name"
+        placeholder="Enter your name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="mb-4"
+        error={nameError}
+      />
+
+      {/* Email input */}
+      <NormalInput
+        type="email"
+        label="Email"
+        placeholder="Enter your email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="mb-4"
+        error={emailError}
+      />
+
+      {/* Password input */}
+      <NormalInput
+        type="password"
+        label="psd"
+        placeholder="Enter your password"
+        value={psd}
+        onChange={(e) => setPsd(e.target.value)}
+        className="mb-4"
+        error={psdError}
+      />
+
+      {/* Confirm Password */}
+      <NormalInput
+        type="password"
+        label="confirmPsd"
+        placeholder="Enter your password again"
+        value={confirmPsd}
+        onChange={(e) => setConfirmPsd(e.target.value)}
+        className="mb-4"
+        error={confirmPsdError}
+      />
+
+      {/* Register button */}
+      <Button onPress={handleRegister} disabled={loading} className="w-full">
+        {loading ? 'Registering...' : 'Register'}
+      </Button>
+    </div>
+  );
+}

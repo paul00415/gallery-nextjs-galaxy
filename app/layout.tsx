@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import StoreProvider from './StoreProvider';
 import HeroProvider from './HeroProvider';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -17,7 +19,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <HeroProvider>
-          <StoreProvider>{children}</StoreProvider>
+          <StoreProvider>
+            <Header />
+            <main className="min-h-screen mt-4">{children}</main>
+            <Footer />
+          </StoreProvider>
         </HeroProvider>
       </body>
     </html>

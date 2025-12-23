@@ -7,18 +7,20 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  Input,
-  Textarea,
 } from '@heroui/react';
 import { useState } from 'react';
+import NormalInput from '../../components/InputFields/NormalInput';
+import TextareaInput from '../../components/InputFields/TextareaInput';
+import ImageInput from '../../components/InputFields/ImageInput';
 
 interface ImageModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit?: (data: {
-    file: File | null;
+    image: File | null;
     title: string;
     description: string;
+    posterName: string;
   }) => void;
 }
 
@@ -27,14 +29,19 @@ export default function ImageModal({
   onClose,
   onSubmit,
 }: ImageModalProps) {
-  const [file, setFile] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [posterName, setPosterName] = useState('');
 
   function handleSubmit() {
     if (onSubmit) {
-      onSubmit({ file, title, description });
+      onSubmit?.({
+        image,
+        title,
+        description,
+        posterName,
+      });
     }
     onClose();
   }
@@ -47,32 +54,41 @@ export default function ImageModal({
             <ModalHeader>Add New Photo</ModalHeader>
 
             <ModalBody className="gap-4">
-              <Input
-                type="file"
-                label="Image File"
-                accept="image/*"
-                onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-              />
+              <div className="flex flex-col justify-center items-center">
+                <ImageInput
+                  value={image}
+                  onChange={setImage}
+                  noImage="Image is required"
+                />
+                {image && (
+                  <p className="mt-2 text-sm text-gray-600">
+                    Selected file: {image.name}
+                  </p>
+                )}
+              </div>
 
-              <Input
+              <NormalInput
                 label="Title"
-                placeholder="Photo title"
                 value={title}
-                onValueChange={setTitle}
+                placeholder="Photo title"
+                onChange={(e) => setTitle(e.target.value)}
+                error="Title is required"
               />
 
-              <Textarea
+              <TextareaInput
                 label="Description"
                 placeholder="Photo description"
                 value={description}
                 onValueChange={setDescription}
+                error="Description is required"
               />
 
-              <Input
+              <NormalInput
                 label="Poster"
-                placeholder="Poster name"
                 value={posterName}
-                onValueChange={setPosterName}
+                placeholder="Poster name"
+                onChange={(e) => setPosterName(e.target.value)}
+                error="Poster name is required"
               />
             </ModalBody>
 

@@ -82,7 +82,7 @@ const demoItems = [
 
 export default function Gallery() {
   return (
-    <div className="w-full min-h-screen flex flex-col gap-4 overflow-x-hidden">
+    <div className="w-full flex flex-col gap-4 overflow-x-hidden">
       <section className="px-4 sm:px-6 md:px-8 lg:px-10">
         <ImageCarousel
           images={demoCarouselImages}

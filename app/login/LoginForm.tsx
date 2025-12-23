@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Input, Button } from '@heroui/react';
+import { Button } from '@heroui/react';
 import NormalInput from '../../components/InputFields/NormalInput';
 
 export default function LoginForm() {
@@ -25,7 +25,7 @@ export default function LoginForm() {
       setPsdError('Password is required');
     }
 
-    // setLoading(true);
+    setLoading(true);
 
     // try {
     //   // Simulate API call
@@ -36,14 +36,14 @@ export default function LoginForm() {
     //   setEmail('');
     //   setPassword('');
     // } catch (err) {
-    //   setError('Login failed. Please try again.');
+    //   // setError('Login failed. Please try again.');
     // } finally {
     //   setLoading(false);
     // }
   };
 
   return (
-    <div className="max-w-sm mx-auto p-6 border rounded-lg shadow-sm">
+    <div className="max-w-sm mx-auto p-6 border border-gray-100 rounded-lg shadow-sm">
       <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
 
       {/* Email input */}
@@ -71,6 +71,13 @@ export default function LoginForm() {
       <Button onPress={handleLogin} disabled={loading} className="w-full">
         {loading ? 'Logging in...' : 'Login'}
       </Button>
+
+      <p className="text-center text-sm text-gray-500 mt-4">
+        Do not have an account?{' '}
+        <a href="/register" className="text-blue-600 hover:underline">
+          Sign up
+        </a>
+      </p>
     </div>
   );
 }

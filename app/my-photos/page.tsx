@@ -63,10 +63,10 @@ export default function MyPhotos() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="w-full min-h-screen p-6">
+    <div className="w-full p-6">
       <div className="mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex md:flex-row flex-col items-center justify-between mb-4 gap-3">
           <div>
             <h1 className="text-3xl font-bold">My Photos</h1>
             <p className="text-muted mt-1">

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Input, Button } from '@heroui/react';
+import { Button } from '@heroui/react';
 import NormalInput from '../../components/InputFields/NormalInput';
 
 export default function RegisterForm() {
@@ -35,28 +35,28 @@ export default function RegisterForm() {
       setConfirmPsdError('Passwords do not match');
     }
 
-    // setLoading(true);
+    setLoading(true);
 
     // try {
     //     // Simulate API call
     //     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    //     console.log('Registered successfully', { name, email, password });
+    //     console.log('Registered successfully', { name, email, psd });
 
     //     // Reset form or redirect after registration
     //     setName('');
     //     setEmail('');
-    //     setPassword('');
-    //     setConfirmPassword('');
+    //     setPsd('');
+    //     setConfirmPsd('');
     // } catch (err) {
-    //     setError('Registration failed. Please try again.');
+    //     // setError('Registration failed. Please try again.');
     // } finally {
     //     setLoading(false);
     // }
   };
 
   return (
-    <div className="max-w-sm mx-auto p-6 border rounded-lg shadow-sm">
+    <div className="max-w-sm mx-auto p-6 border border-gray-100 rounded-lg shadow-sm">
       <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
 
       {/* Name */}

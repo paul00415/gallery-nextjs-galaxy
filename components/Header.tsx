@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input, Button, Avatar } from '@heroui/react';
 import { SearchIcon } from '@heroui/shared-icons';
 import {
@@ -15,16 +15,28 @@ import Image from 'next/image';
 
 export default function Header() {
   const [query, setQuery] = useState('');
+  const [windowWidth, setWindowWidth] = useState<number | null>(null);
   const router = useRouter();
 
   function handleLogout() {
-    // TODO: replace with real logout logic
     console.log('logout');
     router.push('/');
   }
 
+  const isAuthenticated = false;
+
+  // Track window width
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
-    <div className="bg-white dark:bg-base-800 px-4 sm:px-6 md:px-8 lg:px-10 py-2 shadow-sm flex flex-row items-center justify-between w-full">
+    <div className="bg-white dark:bg-base-800 px-4 sm:px-6 md:px-8 lg:px-10 py-2 shadow-sm flex flex-row items-center justify-between w-full fixed top-0 z-50">
       <div className="flex items-center gap-3">
         <Link href="/" className="flex items-center flex-shrink-0">
           <Image
@@ -43,42 +55,80 @@ export default function Header() {
           value={query}
           onValueChange={setQuery}
           startContent={<SearchIcon className="w-4 h-4 text-muted" />}
-          classNames={{ mainWrapper: 'w-full max-w-[600px] flex-shrink-0' }}
+          classNames={{ mainWrapper: 'w-full min-w-[100px] flex-shrink-0' }}
         />
       </div>
 
       <div className="justify-end gap-3 flex flex-row items-center">
-        {/* <Dropdown>
-          <DropdownTrigger>
-            <Avatar name="Guest" src="/images/avatar.png" />
-          </DropdownTrigger>
+        {isAuthenticated ? (
+          <Dropdown>
+            <DropdownTrigger>
+              <Avatar name="Guest" src="/images/avatar.png" />
+            </DropdownTrigger>
 
-          <DropdownMenu>
-            <DropdownItem
-              key="my-photos"
-              onPress={() => router.push('/my-photos')}
-            >
-              My Photos
-            </DropdownItem>
-            <DropdownItem key="logout" onPress={handleLogout}>
-              Logout
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown> */}
+            <DropdownMenu>
+              <DropdownItem
+                key="my-photos"
+                onPress={() => router.push('/my-photos')}
+              >
+                My Photos
+              </DropdownItem>
+              <DropdownItem key="logout" onPress={handleLogout}>
+                Logout
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        ) : windowWidth !== null && windowWidth < 450 ? (
+          // Mobile dropdown for small screens
+          <Dropdown>
+            <DropdownTrigger>
+              <div className="bg-gray-500 rounded-full w-8 h-8 flex items-center justify-center">
+                <svg
+                  className="w-4 h-4 text-white dark:text-white cursor-pointer"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 17 14"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M1 1h15M1 7h15M1 13h15"
+                  />
+                </svg>
+              </div>
+            </DropdownTrigger>
 
-        {/* Login Button */}
-        <Link href="/login">
-          <Button variant="bordered" size="sm">
-            Login
-          </Button>
-        </Link>
+            <DropdownMenu>
+              <DropdownItem key="login" onPress={() => router.push('/login')}>
+                Login
+              </DropdownItem>
+              <DropdownItem
+                key="register"
+                onPress={() => router.push('/register')}
+              >
+                Register
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        ) : (
+          // Default: show two buttons
+          <div className="flex flex-row gap-2">
+            <Link href="/login">
+              <Button variant="bordered" size="sm">
+                Login
+              </Button>
+            </Link>
 
-        {/* Register Button */}
-        <Link href="/register">
-          <Button variant="solid" size="sm">
-            Register
-          </Button>
-        </Link>
+            <Link href="/register">
+              <Button variant="solid" size="sm">
+                Register
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

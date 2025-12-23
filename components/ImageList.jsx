@@ -55,14 +55,14 @@ export default function ImageList({ items }) {
         {items.map((item) => (
           <article
             key={item.id}
-            className="group bg-white dark:bg-base-800 rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer"
+            className="group bg-white dark:bg-base-800 rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer flex flex-col"
           >
-            <div className="relative">
-              {/* Image */}
+            {/* Image + overlay + buttons */}
+            <div className="relative flex flex-row items-center justify-center overflow-hidden">
               <Image
                 src={item.image}
                 alt={item.title}
-                className="block w-full h-auto"
+                className="block h-30 w-full object-cover"
                 onClick={() => setSelected(item)}
               />
 
@@ -100,7 +100,7 @@ export default function ImageList({ items }) {
               </div>
             </div>
 
-            {/* Metadata */}
+            {/* Metadata fixed at bottom */}
             <div className="p-4 space-y-1">
               <h3 className="text-sm font-medium truncate">
                 Title: {item.title}

@@ -21,7 +21,7 @@ export default function RootLayout({
         <HeroProvider>
           <StoreProvider>
             <Header />
-            <main className="min-h-screen mt-4">{children}</main>
+            <main className="mt-20 mb-22">{children}</main>
             <Footer />
           </StoreProvider>
         </HeroProvider>

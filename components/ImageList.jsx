@@ -55,27 +55,25 @@ export default function ImageList({ items }) {
         {items.map((item) => (
           <article
             key={item.id}
-            className="bg-white dark:bg-base-800 rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer"
+            className="group bg-white dark:bg-base-800 rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer"
           >
-            {/* Image */}
             <div className="relative">
+              {/* Image */}
               <Image
                 src={item.image}
                 alt={item.title}
+                className="block w-full h-auto"
                 onClick={() => setSelected(item)}
               />
 
-              {/* Hover overlay */}
-              <div className="pointer-events-none absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity" />
-
               {/* Action buttons */}
-              <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelected(item);
                   }}
-                  className="pointer-events-auto inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/90 hover:bg-white text-black shadow cursor-pointer"
+                  className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/90 hover:bg-white text-black shadow cursor-pointer"
                 >
                   <Eye size={16} />
                 </button>
@@ -85,7 +83,7 @@ export default function ImageList({ items }) {
                     e.stopPropagation();
                     console.log('Edit', item.id);
                   }}
-                  className="pointer-events-auto inline-flex items-center justify-center w-9 h-9 rounded-full bg-green-500 hover:bg-green-600 text-white shadow cursor-pointer"
+                  className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-green-500 hover:bg-green-600 text-white shadow cursor-pointer"
                 >
                   <Pencil size={16} />
                 </button>
@@ -95,7 +93,7 @@ export default function ImageList({ items }) {
                     e.stopPropagation();
                     setDeleteTarget(item);
                   }}
-                  className="pointer-events-auto inline-flex items-center justify-center w-9 h-9 rounded-full bg-red-500 hover:bg-red-600 text-white shadow cursor-pointer"
+                  className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-red-500 hover:bg-red-600 text-white shadow cursor-pointer"
                 >
                   <Trash2 size={16} />
                 </button>

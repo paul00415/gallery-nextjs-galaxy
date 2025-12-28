@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { registerUser } from '@/services/auth.service';
 import axios from 'axios';
 
 interface RegisterPayload {
@@ -25,6 +26,7 @@ export const register = createAsyncThunk<
   { rejectValue: string }
 >('auth/register', async (payload, { rejectWithValue }) => {
   try {
+    const result = await registerUser(payload);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       return rejectWithValue(

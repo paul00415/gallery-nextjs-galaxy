@@ -1,8 +1,11 @@
 'use client';
 
 // Importing decrement and increment action creator from the CounterSlice.
-import { decrement, increment } from '@/lib/features/CounteState/CounterSlice';
-import { RootState } from '@/lib/store';
+import {
+  decrement,
+  increment,
+} from '@/store/features/CounteState/CounterSlice';
+import { RootState } from '@/store/store';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 

@@ -1,10 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useEffectEvent } from 'react';
 import { Button } from '@heroui/react';
 import NormalInput from '../../components/InputFields/NormalInput';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { register, resetRegisterState } from '@/store/auth/authSlice';
 
 export default function RegisterForm() {
+  const dispatch = useAppDispatch();
+  const { loading, error, registered } = useAppSelector((state) => state.auth);
+
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
   const [email, setEmail] = useState('');
@@ -13,7 +18,6 @@ export default function RegisterForm() {
   const [psdError, setPsdError] = useState('');
   const [confirmPsd, setConfirmPsd] = useState('');
   const [confirmPsdError, setConfirmPsdError] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
     setNameError('');
@@ -22,38 +26,34 @@ export default function RegisterForm() {
     setConfirmPsdError('');
 
     // Basic validation
-    if (!name) {
-      setNameError('Name is required');
-    }
-    if (!email) {
-      setEmailError('Email is required');
-    }
-    if (!psd) {
-      setPsdError('Password is required');
-    }
-    if (psd !== confirmPsd) {
-      setConfirmPsdError('Passwords do not match');
-    }
+    if (!name) setNameError('Name is required');
+    if (!email) setEmailError('Email is required');
+    if (!psd) setPsdError('Password is required');
+    if (psd !== confirmPsd) setConfirmPsdError('Passwords do not match');
 
-    setLoading(true);
-
-    // try {
-    //     // Simulate API call
-    //     await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    //     console.log('Registered successfully', { name, email, psd });
-
-    //     // Reset form or redirect after registration
-    //     setName('');
-    //     setEmail('');
-    //     setPsd('');
-    //     setConfirmPsd('');
-    // } catch (err) {
-    //     // setError('Registration failed. Please try again.');
-    // } finally {
-    //     setLoading(false);
-    // }
+    await dispatch(
+      register({
+        name,
+        email,
+        password: psd,
+      })
+    );
   };
+
+  const initInputs = useEffectEvent(() => {
+    setName('');
+    setEmail('');
+    setPsd('');
+    setConfirmPsd('');
+  });
+
+  useEffect(() => {
+    if (registered) {
+      alert('Registered successfully. Please verify your email');
+      dispatch(resetRegisterState());
+      initInputs();
+    }
+  }, [registered, dispatch]);
 
   return (
     <div className="max-w-sm mx-auto p-6 border border-gray-100 rounded-lg shadow-sm">
@@ -102,6 +102,8 @@ export default function RegisterForm() {
         className="mb-4"
         error={confirmPsdError}
       />
+
+      {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
 
       {/* Register button */}
       <Button onPress={handleRegister} disabled={loading} className="w-full">

@@ -9,47 +9,76 @@ import {
   Button,
 } from '@heroui/react';
 import { useState } from 'react';
+
 import NormalInput from '../../components/InputFields/NormalInput';
 import TextareaInput from '../../components/InputFields/TextareaInput';
 import ImageInput from '../../components/InputFields/ImageInput';
 
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { uploadPhoto } from '@/store/photo/photoSlice';
+
 interface ImageModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit?: (data: {
-    image: File | null;
-    title: string;
-    description: string;
-    posterName: string;
-  }) => void;
 }
 
-export default function ImageModal({
-  isOpen,
-  onClose,
-  onSubmit,
-}: ImageModalProps) {
+export default function ImageModal({ isOpen, onClose }: ImageModalProps) {
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector((state) => state.photo);
+
   const [image, setImage] = useState<File | null>(null);
   const [title, setTitle] = useState('');
+  const [titleError, setTitleError] = useState('');
   const [description, setDescription] = useState('');
-  const [posterName, setPosterName] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
 
-  function handleSubmit() {
-    if (onSubmit) {
-      onSubmit?.({
-        image,
-        title,
-        description,
-        posterName,
-      });
+  const handleSubmit = async () => {
+    // Validation
+    setTitleError('');
+    setDescriptionError('');
+
+    if (!image) {
+      alert('Image is required');
+      return;
     }
-    onClose();
-  }
+
+    if (!title) {
+      setTitleError('Title is required');
+      return;
+    }
+
+    if (!description) {
+      setDescriptionError('Description is required');
+      return;
+    }
+
+    try {
+      // Dispatch upload flow
+      await dispatch(
+        uploadPhoto({
+          image,
+          title,
+          description,
+        })
+      ).unwrap();
+
+      // Close modal ONLY on success
+      onClose();
+
+      // Reset form (optional)
+      setImage(null);
+      setTitle('');
+      setDescription('');
+    } catch (err) {
+      console.log(err);
+      alert('Upload failed');
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onClose} placement="center">
       <ModalContent>
-        {(onClose) => (
+        {() => (
           <>
             <ModalHeader>Add New Photo</ModalHeader>
 
@@ -72,7 +101,7 @@ export default function ImageModal({
                 value={title}
                 placeholder="Photo title"
                 onChange={(e) => setTitle(e.target.value)}
-                error="Title is required"
+                error={titleError}
               />
 
               <TextareaInput
@@ -80,23 +109,23 @@ export default function ImageModal({
                 placeholder="Photo description"
                 value={description}
                 onValueChange={setDescription}
-                error="Description is required"
+                error={descriptionError}
               />
 
-              <NormalInput
-                label="Poster"
-                value={posterName}
-                placeholder="Poster name"
-                onChange={(e) => setPosterName(e.target.value)}
-                error="Poster name is required"
-              />
+              {error && (
+                <p className="text-sm text-red-500 text-center">{error}</p>
+              )}
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="light" onPress={onClose} isDisabled={loading}>
                 Cancel
               </Button>
-              <Button color="primary" onPress={handleSubmit}>
+              <Button
+                color="primary"
+                onPress={handleSubmit}
+                isLoading={loading}
+              >
                 Add Photo
               </Button>
             </ModalFooter>

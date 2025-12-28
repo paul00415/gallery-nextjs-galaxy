@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import CounterSlice from './features/CounteState/CounterSlice';
+import photoReducer from './photo/photoSlice';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      counter: CounterSlice,
+      photo: photoReducer,
     },
   });
 };

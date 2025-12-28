@@ -11,7 +11,7 @@ import {
   DropdownItem,
 } from '@heroui/dropdown';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { Image } from '@heroui/image';
 
 export default function Header() {
   const [query, setQuery] = useState('');

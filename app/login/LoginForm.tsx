@@ -1,16 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@heroui/react';
 import NormalInput from '../../components/InputFields/NormalInput';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { login } from '@/store/auth/authSlice';
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const { loading, error, isAuthenticated } = useAppSelector(
+    (state) => state.auth
+  );
+
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
   const [psdError, setPsdError] = useState('');
-
-  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     setEmailError('');
@@ -25,22 +33,14 @@ export default function LoginForm() {
       setPsdError('Password is required');
     }
 
-    setLoading(true);
-
-    // try {
-    //   // Simulate API call
-    //   await new Promise((resolve) => setTimeout(resolve, 1000));
-    //   console.log('Login successful', { email, password });
-
-    //   // Reset form or redirect after login
-    //   setEmail('');
-    //   setPassword('');
-    // } catch (err) {
-    //   // setError('Login failed. Please try again.');
-    // } finally {
-    //   setLoading(false);
-    // }
+    dispatch(login({ email, password }));
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/');
+    }
+  }, [isAuthenticated, router]);
 
   return (
     <div className="max-w-sm mx-auto p-6 border border-gray-100 rounded-lg shadow-sm">

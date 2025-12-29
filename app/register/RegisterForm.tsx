@@ -5,10 +5,15 @@ import { Button } from '@heroui/react';
 import NormalInput from '../../components/InputFields/NormalInput';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { register, resetRegisterState } from '@/store/auth/authSlice';
+import { useRouter } from 'next/navigation';
 
 export default function RegisterForm() {
   const dispatch = useAppDispatch();
-  const { loading, error, registered } = useAppSelector((state) => state.auth);
+  const router = useRouter();
+
+  const { loading, error, registered, isAuthenticated } = useAppSelector(
+    (state) => state.auth
+  );
 
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
@@ -54,6 +59,18 @@ export default function RegisterForm() {
       initInputs();
     }
   }, [registered, dispatch]);
+
+  useEffect(() => {
+    if (!registered) {
+      router.push('/login');
+    }
+  }, [registered, router]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/');
+    }
+  }, [isAuthenticated, router]);
 
   return (
     <div className="max-w-sm mx-auto p-6 border border-gray-100 rounded-lg shadow-sm">

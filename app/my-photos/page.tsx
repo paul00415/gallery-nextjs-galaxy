@@ -1,12 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ImageList from '../../components/ImageList';
 import { Button } from '@heroui/react';
 import { Plus } from 'lucide-react';
 import ImageModal from '../../components/modals/ImageModal';
+import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/store/hooks';
 
 export default function MyPhotos() {
+  const router = useRouter();
+
   // For now we provide no items so the client uses its demo items or you can pass real user photos here.
 
   const demoItems = [
@@ -61,6 +65,13 @@ export default function MyPhotos() {
   ];
 
   const [open, setOpen] = useState(false);
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/');
+    }
+  }, [isAuthenticated, router]);
 
   return (
     <div className="w-full p-6">
@@ -86,13 +97,7 @@ export default function MyPhotos() {
         <ImageList items={demoItems} />
       </div>
 
-      <ImageModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onSubmit={(data) => {
-          console.log(data);
-        }}
-      />
+      <ImageModal isOpen={open} onClose={() => setOpen(false)} />
     </div>
   );
 }

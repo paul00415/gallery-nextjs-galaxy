@@ -38,7 +38,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push('/');
+      router.push('/my-photos');
     }
   }, [isAuthenticated, router]);
 

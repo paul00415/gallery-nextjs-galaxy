@@ -65,7 +65,7 @@ export default function Header() {
       <div className="justify-end gap-3 flex flex-row items-center">
         {isAuthenticated ? (
           <Dropdown>
-            <DropdownTrigger>
+            <DropdownTrigger className="cursor-pointer">
               <Avatar name="Guest" src="/images/avatar.png" />
             </DropdownTrigger>
 

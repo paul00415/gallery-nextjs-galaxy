@@ -1,9 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {
-  getSignedUploadUrl,
-  uploadToBucket,
-  createPhoto,
-} from '@/services/photo.service';
+import { getUrls, uploadToBucket, createPhoto } from '@/services/photo.service';
 
 interface UploadPhotoPayload {
   image: File;
@@ -16,17 +12,17 @@ export const uploadPhoto = createAsyncThunk(
   async (payload: UploadPhotoPayload, { rejectWithValue }) => {
     try {
       // 1. get signed URL
-      const { uploadUrl, fileUrl } = await getSignedUploadUrl(
-        payload.image.type
-      );
+      const { uploadUrl, fileUrl } = await getUrls(payload.image.type);
 
       // 2. upload image
-      await uploadToBucket(uploadUrl, payload.image);
+      await uploadToBucket(uploadUrl, payload.image, (progress) => {
+        console.log('Upload progress:', progress);
+      });
 
       // 3. save metadata
       await createPhoto({
         title: payload.title,
-        description: payload.description,
+        desc: payload.description,
         imageUrl: fileUrl,
       });
 

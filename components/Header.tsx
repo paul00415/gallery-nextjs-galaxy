@@ -12,18 +12,21 @@ import {
 } from '@heroui/dropdown';
 import { useRouter } from 'next/navigation';
 import { Image } from '@heroui/image';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { logoutUserThunk } from '@/store/auth/authSlice';
 
 export default function Header() {
+  const dispatch = useAppDispatch();
   const [query, setQuery] = useState('');
   const [windowWidth, setWindowWidth] = useState<number | null>(null);
   const router = useRouter();
 
-  function handleLogout() {
-    console.log('logout');
+  const handleLogout = async () => {
+    await dispatch(logoutUserThunk());
     router.push('/');
-  }
+  };
 
-  const isAuthenticated = false;
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   // Track window width
   useEffect(() => {

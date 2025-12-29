@@ -20,3 +20,7 @@ export const loginUser = async (payload: LoginPayload) => {
   const res = await api.post('/auth/login', payload);
   return res.data;
 };
+
+export const logoutUser = async () => {
+  await api.post('/auth/logout', {});
+};

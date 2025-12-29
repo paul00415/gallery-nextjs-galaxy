@@ -1,8 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { registerUser, loginUser } from '@/services/auth.service';
-
-//   Types
+import { registerUser, loginUser, logoutUser } from '@/services/auth.service';
 
 interface RegisterPayload {
   name: string;
@@ -31,8 +29,6 @@ interface AuthState {
   registered: boolean;
 }
 
-//   Initial State
-
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
@@ -40,8 +36,6 @@ const initialState: AuthState = {
   error: null,
   registered: false,
 };
-
-//   Register Thunk
 
 export const register = createAsyncThunk<
   void,
@@ -59,8 +53,6 @@ export const register = createAsyncThunk<
     return rejectWithValue('Registration failed');
   }
 });
-
-//   Login Thunk
 
 export const login = createAsyncThunk<
   { user: User; accessToken: string },
@@ -82,26 +74,42 @@ export const login = createAsyncThunk<
   }
 });
 
+export const logoutUserThunk = createAsyncThunk<
+  void,
+  void,
+  { rejectValue: string }
+>('auth/logout', async (_, { rejectWithValue }) => {
+  try {
+    await logoutUser();
+
+    // Clear token after backend success
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('accessToken');
+    }
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      return rejectWithValue(err.response?.data?.message ?? 'Logout failed');
+    }
+    return rejectWithValue('Logout failed');
+  }
+});
+
 //   Slice
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    // 🔹 Used after reload to restore auth state
+    restoreAuth(state, action: PayloadAction<{ user: User | null }>) {
+      state.user = action.payload.user;
+      state.isAuthenticated = true;
+    },
+
     resetRegisterState(state) {
       state.loading = false;
       state.error = null;
       state.registered = false;
-    },
-
-    logout(state) {
-      state.user = null;
-      state.isAuthenticated = false;
-      state.error = null;
-
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('accessToken');
-      }
     },
   },
   extraReducers: (builder) => {
@@ -129,12 +137,10 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
-
-        // ✅ Store in Redux
         state.user = action.payload.user;
         state.isAuthenticated = true;
 
-        // ✅ Store ONLY token in localStorage
+        // ✅ Persist ONLY token
         if (typeof window !== 'undefined') {
           localStorage.setItem('accessToken', action.payload.accessToken);
         }
@@ -143,12 +149,27 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload ?? 'Login failed';
         state.isAuthenticated = false;
+      })
+      .addCase(logoutUserThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logoutUserThunk.fulfilled, (state) => {
+        state.loading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+      })
+      .addCase(logoutUserThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ?? 'Logout failed';
       });
   },
 });
 
-//   Exports
+/* =====================
+   Exports
+===================== */
 
-export const { resetRegisterState, logout } = authSlice.actions;
+export const { restoreAuth, resetRegisterState } = authSlice.actions;
 
 export default authSlice.reducer;

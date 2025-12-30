@@ -41,7 +41,7 @@ export default function ImagePreviewModal({ selected, onClose }) {
           ✕
         </button>
 
-        <Image src={selected.image} alt={selected.title} width={`90%`} />
+        <Image src={selected.imageUrl} alt={selected.title} width={`90%`} />
 
         <div className="mt-2 text-center text-white">{selected.title}</div>
       </div>

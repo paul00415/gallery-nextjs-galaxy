@@ -35,3 +35,15 @@ export async function createPhoto(data: {
 }) {
   return await api.post('/photos', data);
 }
+
+export async function fetchRecentPhotosApi() {
+  const res = await api.get('/photos/recent');
+  return res.data;
+}
+
+export async function getPhotosApi(cursor?: string | null) {
+  const res = await api.get('/photos', {
+    params: cursor ? { cursor } : 0,
+  });
+  return res.data;
+}
